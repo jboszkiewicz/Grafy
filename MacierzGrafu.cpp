@@ -2,7 +2,7 @@
 
 std::stack < int > stosMG;
 
-void DFS_MS(int ** macierz, int n){
+void DFS_MG(int ** macierz, int n){
 	int *kolory = (int*)malloc(n * sizeof(int));//tablica kolorów wierzcho³ków grafu numerowana od 0/ 0 bia³y, 1 szary, 2 czarny
 	for(int i = 0; i < n; i++){
 		kolory[i] = 0;
