@@ -1,0 +1,74 @@
+#include "MacierzS¹siedztwa.h"
+
+std::stack < int > stosMS;
+
+void DFS_MS(bool ** macierz, int n){
+	int *kolory = (int*)malloc(n * sizeof(int));//tablica kolorów wierzcho³ków grafu, 0 bia³y, 1 szary, 2 czarny
+	for(int i = 0; i < n; i++){
+		kolory[i] = 0;
+	}
+	for(int i = 0; i < n; i++){
+		if(!DFStsort_MS(macierz, i, n, kolory)){//przerywa jeœli znajdzie cykl
+			printf("\nError: Graf posiada cykl!\n");
+			while(!stosMS.empty())//czyszczenie stosu
+				stosMS.pop();
+			return;
+		}
+	}
+	while(!stosMS.empty()){//wypisanie elementów
+		printf("%d ", stosMS.top());
+		stosMS.pop();
+	}
+	delete[] kolory;
+}
+
+bool DFStsort_MS(bool ** macierz, int v, int n, int * kolory){
+	if(kolory[v] == 2) return true;//wierzcho³ek przetworzony
+	if(kolory[v] == 1) return false;//znaleziony cykl
+	else{
+		kolory[v] = 1;
+		for(int j = 0; j < n; j++){
+			if(macierz[v][j])
+				if(!DFStsort_MS(macierz, j, n, kolory)) return false;
+		}
+		kolory[v] = 2;
+		stosMS.push(v);
+		return true;
+	}
+}
+
+void DEL_MS(bool ** macierz, int n){
+	int *Vin = (int*)malloc(n * sizeof(int));//tablica stopni wchodz¹cych wierzcho³ków grafu
+	bool *deleted = (bool*)malloc(n * sizeof(bool));//tablica usuniêtych wierzcho³ków
+	for(int i = 0; i < n; i++){
+		Vin[i] = 0;
+		deleted[i] = false;
+	}
+	//zliczanie stopni wejœciowych wierzcho³ków grafu
+	for(int i = 0; i < n; i++){//wiersz - wierzcho³ek pocz¹tkowy
+		for(int j = 0; j < n; j++){//kolumna - wierzcho³ek koñcowy
+			if(macierz[i][j]){
+				Vin[j]++;
+			}
+		}
+	}
+	bool test = false;
+	for(int i = 0; i < n; i++){
+		if(Vin[i] || deleted[i]){
+			if(Vin[i])	test = false; //je¿eli po zakoñczeniu wykonywania pêtli test bêdzie false, to istnieje wierzcho³ek o wiêkszym od 0 stopniu wejœciowym czyli graf posiada cykl
+			continue;
+		}
+		test = true;
+		deleted[i] = true;
+		///zmniejszenie stopni wejœciowych dla nastêpników
+		for(int j = 0; j < n; j++)
+			if(macierz[i][j]) Vin[j]--;
+		printf("%d ", i);
+		i = -1;//powrót do pierwszego wierzcho³ka
+	}
+	if(!test){
+		printf("\nError: Graf posiada cykl!\n");
+	}
+	delete[] Vin;
+	delete[] deleted;
+}
