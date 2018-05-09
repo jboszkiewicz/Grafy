@@ -13,16 +13,16 @@ std::string DFS_MS(bool ** macierz, int n){
 			printf("\nError: Graf posiada cykl!\n");
 			while(!stosMS.empty())//czyszczenie stosu
 				stosMS.pop();
+			delete[] kolory;
 			return "";
 		}
 	}
 	while(!stosMS.empty()){//wypisanie elementów
 		wynik += std::to_string(stosMS.top()) + " ";
-	//	printf("%d ", stosMS.top());
 		stosMS.pop();
 	}
-	return wynik;
 	delete[] kolory;
+	return wynik;
 }
 
 bool DFStsort_MS(bool ** macierz, int v, int n, int * kolory){
@@ -68,14 +68,13 @@ std::string DEL_MS(bool ** macierz, int n){
 		for(int j = 0; j < n; j++)
 			if(macierz[i][j]) Vin[j]--;
 		wynik += std::to_string(i) + " ";
-	//	printf("%d ", i);
 		i = -1;//powrót do pierwszego wierzcho³ka
 	}
 	if(!test){
 		printf("\nError: Graf posiada cykl!\n");
 		wynik = "";
 	}
-	return wynik;
 	delete[] Vin;
 	delete[] deleted;
+	return wynik;
 }

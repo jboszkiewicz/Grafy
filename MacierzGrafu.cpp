@@ -13,15 +13,16 @@ std::string DFS_MG(int ** macierz, int n){
 			printf("\nError: Graf posiada cykl!\n");
 			while(!stosMG.empty())//czyszczenie stosu
 				stosMG.pop();
+			delete[] kolory;
 			return wynik;
 		}
 	}
 	while(!stosMG.empty()){//wypisanie elementów
-		wynik += std::to_string(stosMG.top()) + " ";// printf("%d ", stosMG.top());
+		wynik += std::to_string(stosMG.top()) + " ";//
 		stosMG.pop();
 	}
-	return wynik;
 	delete[] kolory;
+	return wynik;
 }
 
 bool DFStsort_MG(int ** macierz, int v, int n, int * kolory){
@@ -83,13 +84,14 @@ std::string DEL_MG(int ** macierz, int n){
 			if(!deleted[k - 1]) Vin[k - 1]--;//zmniejszenie Vin dla ostatniego elementu, pêtla koñczy siê przed zmniejszeniem
 		}
 		wynik += std::to_string(i) + " ";
-	//	printf("%d ", i);
 		i = 0;//powrót do pierwszego wierzcho³ka
 	}
 	if(!test){
 		printf("\nError: Graf posiada cykl!\n");
 		wynik = "";
 	}
+	delete[] Vin;
+	delete[] deleted;
 	return wynik;
 
 }

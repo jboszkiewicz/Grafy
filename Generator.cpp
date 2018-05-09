@@ -21,7 +21,7 @@ bool CheckAcyclic(bool ** macierz, int * kolory, int v, int n){
 }
 
 void GenerateGraph(bool **macierz, int v, int e){
-	int i, j, x, y;// , count;
+	int i, j, x, y;
 
 	int *kolory = (int*)malloc(v * sizeof(int));//tablica kolorów wierzcho³ków grafu, 0 bia³y, 1 szary, 2 czarny
 
@@ -43,24 +43,5 @@ void GenerateGraph(bool **macierz, int v, int e){
 			}
 		}
 	}
-	
-	// Print the random graph.
-	/*
-	cout << "\nThe generated random random graph is: ";
-	for(i = 0; i < v; i++){
-		count = 0;
-		cout << "\n\t" << i << "-> { ";
-		for(j = 0; j < v; j++){
-			if(macierz[i][j]){
-				cout << j << "  ";
-				count++;
-			} else if(macierz[j][i]){
-				count++;
-			} else if(j == v - 1 && count == 0)
-				cout << "Isolated Vertex!";
-		}
-		cout << " }";
-	}
-	*/
 	delete[] kolory;
 }
