@@ -2,23 +2,25 @@
 
 std::stack < int > stosMG;
 
-void DFS_MG(int ** macierz, int n){
+std::string DFS_MG(int ** macierz, int n){
+	std::string wynik = "";
 	int *kolory = (int*)malloc(n * sizeof(int));//tablica kolorów wierzcho³ków grafu numerowana od 0/ 0 bia³y, 1 szary, 2 czarny
 	for(int i = 0; i < n; i++){
 		kolory[i] = 0;
 	}
-	for(int i = 0; i < n; i++){
+	for(int i = 1; i < n + 1; i++){
 		if(!DFStsort_MG(macierz, i, n, kolory)){//przerywa jeœli znajdzie cykl
 			printf("\nError: Graf posiada cykl!\n");
 			while(!stosMG.empty())//czyszczenie stosu
 				stosMG.pop();
-			return;
+			return wynik;
 		}
 	}
 	while(!stosMG.empty()){//wypisanie elementów
-		printf("%d ", stosMG.top());
+		wynik += std::to_string(stosMG.top()) + " ";// printf("%d ", stosMG.top());
 		stosMG.pop();
 	}
+	return wynik;
 	delete[] kolory;
 }
 
@@ -43,7 +45,8 @@ bool DFStsort_MG(int ** macierz, int v, int n, int * kolory){
 
 
 //n - iloœæ elementów w grafie, macierz o rozmiarze (n+2)^2
-void DEL_MG(int ** macierz, int n){
+std::string DEL_MG(int ** macierz, int n){
+	std::string wynik = "";
 	int *Vin = (int*)malloc(n * sizeof(int));//tablica stopni wchodz¹cych wierzcho³ków grafu, numerowana od 0
 	bool *deleted = (bool*)malloc(n * sizeof(bool));//tablica usuniêtych wierzcho³ków, numerowana od 0
 	for(int i = 0; i < n; i++){
@@ -52,6 +55,7 @@ void DEL_MG(int ** macierz, int n){
 	}
 	//zliczanie stopni wejœciowych wierzcho³ków grafu
 	for(int i = 1; i <= n; i++){//wiersz - wierzcho³ek pocz¹tkowy
+		
 		int k = macierz[i][n + 1];
 		if(k){
 			while(k != macierz[n + 1][i]){//dopóki k != od ostatniego elementu listy
@@ -63,12 +67,12 @@ void DEL_MG(int ** macierz, int n){
 	}
 	bool test = false;
 	for(int i = 1; i <= n; i++){
-		if(Vin[i] || deleted[i]){
-			if(Vin[i])	test = false; //je¿eli po zakoñczeniu wykonywania pêtli test bêdzie false, to istnieje wierzcho³ek o wiêkszym od 0 stopniu wejœciowym czyli graf posiada cykl
+		if(Vin[i - 1] || deleted[i - 1]){
+			if(Vin[i - 1])	test = false; //je¿eli po zakoñczeniu wykonywania pêtli test bêdzie false, to istnieje wierzcho³ek o wiêkszym od 0 stopniu wejœciowym czyli graf posiada cykl
 			continue;
 		}
 		test = true;
-		deleted[i] = true;
+		deleted[i - 1] = true;
 		///zmniejszenie stopni wejœciowych dla nastêpników
 		int k = macierz[i][n + 1];
 		if(k){
@@ -78,11 +82,14 @@ void DEL_MG(int ** macierz, int n){
 			}
 			if(!deleted[k - 1]) Vin[k - 1]--;//zmniejszenie Vin dla ostatniego elementu, pêtla koñczy siê przed zmniejszeniem
 		}
-		printf("%d ", i);
+		wynik += std::to_string(i) + " ";
+	//	printf("%d ", i);
 		i = 0;//powrót do pierwszego wierzcho³ka
 	}
 	if(!test){
 		printf("\nError: Graf posiada cykl!\n");
+		wynik = "";
 	}
+	return wynik;
 
 }

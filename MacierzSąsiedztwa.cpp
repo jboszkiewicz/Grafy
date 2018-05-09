@@ -2,7 +2,8 @@
 
 std::stack < int > stosMS;
 
-void DFS_MS(bool ** macierz, int n){
+std::string DFS_MS(bool ** macierz, int n){
+	std::string wynik = "";
 	int *kolory = (int*)malloc(n * sizeof(int));//tablica kolorów wierzcho³ków grafu, 0 bia³y, 1 szary, 2 czarny
 	for(int i = 0; i < n; i++){
 		kolory[i] = 0;
@@ -12,13 +13,15 @@ void DFS_MS(bool ** macierz, int n){
 			printf("\nError: Graf posiada cykl!\n");
 			while(!stosMS.empty())//czyszczenie stosu
 				stosMS.pop();
-			return;
+			return "";
 		}
 	}
 	while(!stosMS.empty()){//wypisanie elementów
-		printf("%d ", stosMS.top());
+		wynik += std::to_string(stosMS.top()) + " ";
+	//	printf("%d ", stosMS.top());
 		stosMS.pop();
 	}
+	return wynik;
 	delete[] kolory;
 }
 
@@ -37,7 +40,8 @@ bool DFStsort_MS(bool ** macierz, int v, int n, int * kolory){
 	}
 }
 
-void DEL_MS(bool ** macierz, int n){
+std::string DEL_MS(bool ** macierz, int n){
+	std::string wynik = "";
 	int *Vin = (int*)malloc(n * sizeof(int));//tablica stopni wchodz¹cych wierzcho³ków grafu
 	bool *deleted = (bool*)malloc(n * sizeof(bool));//tablica usuniêtych wierzcho³ków
 	for(int i = 0; i < n; i++){
@@ -63,12 +67,15 @@ void DEL_MS(bool ** macierz, int n){
 		///zmniejszenie stopni wejœciowych dla nastêpników
 		for(int j = 0; j < n; j++)
 			if(macierz[i][j]) Vin[j]--;
-		printf("%d ", i);
+		wynik += std::to_string(i) + " ";
+	//	printf("%d ", i);
 		i = -1;//powrót do pierwszego wierzcho³ka
 	}
 	if(!test){
 		printf("\nError: Graf posiada cykl!\n");
+		wynik = "";
 	}
+	return wynik;
 	delete[] Vin;
 	delete[] deleted;
 }

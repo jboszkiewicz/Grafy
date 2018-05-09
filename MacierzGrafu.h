@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stack>
+#include <string>
 
-void DFS_MG(int ** macierz, int n);
-void DEL_MG(int **macierz, int n);
+std::string DFS_MG(int ** macierz, int n);
+std::string DEL_MG(int **macierz, int n);
 bool DFStsort_MG(int ** macierz, int v, int n, int * kolory);
